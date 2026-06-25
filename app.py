@@ -354,23 +354,43 @@ elif menu == "Single Inspection":
                             cv2.putText(overlay, label_text, (x1, y1-5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, warna, 2)
                 
                 cv2.addWeighted(overlay, 0.4, img_display, 0.6, 0, img_display)
-            
-            st.image(img_display, caption="Radiograph Preview", use_column_width=True)
-            
+
             h, w = img_rgb.shape[:2]
             kanvas_lebar = 550 
             kanvas_tinggi = int(h * (kanvas_lebar / w))
+
+            st.markdown("""
+            <style>
+                .canvas-container {
+                    position: relative;
+                    width: 550px; /* Samakan dengan kanvas_lebar */
+                    height: """ + str(kanvas_tinggi) + """px;
+                }
+                canvas {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index: 10;
+                }
+            </style>
+            """, unsafe_allow_html=True)
+            
+            st.markdown('<div class="canvas-container">', unsafe_allow_html=True)
+            
+            st.image(img_display, width=kanvas_lebar)
             
             canvas_result = st_canvas(
                 fill_color="rgba(255, 0, 0, 0.3)",
                 stroke_width=3,
                 stroke_color=color,
-                background_image=None,  # KUNCI: Kosongkan ini agar tidak bentrok
+                background_image=None, 
                 width=kanvas_lebar,
                 height=kanvas_tinggi,
                 drawing_mode=d_mode,
                 key="canvas_utama",
             )
+            
+            st.markdown('</div>', unsafe_allow_html=True)
             
             faktor_skala = w / kanvas_lebar
             
