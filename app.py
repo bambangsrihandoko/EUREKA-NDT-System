@@ -358,13 +358,22 @@ elif menu == "Single Inspection":
             kanvas_lebar = 550 
             kanvas_tinggi = int(h * (kanvas_lebar / w))
             
-            canvas_result = st_canvas(
-                fill_color="rgba(255, 0, 0, 0.3)",
-                stroke_width=3, stroke_color=color, 
-                background_image=Image.fromarray(img_display), 
-                width=kanvas_lebar, height=kanvas_tinggi,
-                drawing_mode=d_mode, key="canvas_utama", 
-            )
+            st.write(f"Debug: Dimensi gambar {img_display.shape}") 
+            
+            img_pil = Image.fromarray(img_display)
+            
+            canvas_container = st.empty()
+            with canvas_container:
+                canvas_result = st_canvas(
+                    fill_color="rgba(255, 0, 0, 0.3)",
+                    stroke_width=3,
+                    stroke_color=color,
+                    background_image=img_pil, 
+                    width=kanvas_lebar,
+                    height=kanvas_tinggi,
+                    drawing_mode=d_mode,
+                    key="canvas_utama",
+                )
             
             faktor_skala = w / kanvas_lebar
             
