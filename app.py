@@ -10,6 +10,7 @@ from streamlit_drawable_canvas import st_canvas
 import os
 from fpdf import FPDF
 import base64
+from io import BytesIO
 
 # Konfigurasi Halaman Dasar
 st.set_page_config(page_title="EUREKA - NDT AI Inspection", layout="wide", page_icon="☢️")
@@ -358,26 +359,24 @@ elif menu == "Single Inspection":
             kanvas_lebar = 550 
             kanvas_tinggi = int(h * (kanvas_lebar / w))
             
-            if 'canvas_key' not in st.session_state:
-                st.session_state['canvas_key'] = 0
+            def image_to_base64(img_array):
+                img_pil = Image.fromarray(img_array)
+                buffered = BytesIO()
+                img_pil.save(buffered, format="PNG")
+                return "data:image/png;base64," + base64.b64encode(buffered.getvalue()).decode()
             
-            img_pil = Image.fromarray(img_display)
-            
-            canvas_key = f"canvas_utama_{st.session_state['canvas_key']}"
+            img_base64 = image_to_base64(img_display)
             
             canvas_result = st_canvas(
                 fill_color="rgba(255, 0, 0, 0.3)",
                 stroke_width=3,
                 stroke_color=color,
-                background_image=img_pil,
+                background_image=img_base64,
                 width=kanvas_lebar,
                 height=kanvas_tinggi,
                 drawing_mode=d_mode,
-                key=canvas_key, 
+                key="canvas_utama",
             )
-            
-            if canvas_result.json_data is not None and len(canvas_result.json_data["objects"]) > 0:
-                pass
             
             faktor_skala = w / kanvas_lebar
             
