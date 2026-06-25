@@ -358,22 +358,26 @@ elif menu == "Single Inspection":
             kanvas_lebar = 550 
             kanvas_tinggi = int(h * (kanvas_lebar / w))
             
-            st.write(f"Debug: Dimensi gambar {img_display.shape}") 
+            if 'canvas_key' not in st.session_state:
+                st.session_state['canvas_key'] = 0
             
             img_pil = Image.fromarray(img_display)
             
-            canvas_container = st.empty()
-            with canvas_container:
-                canvas_result = st_canvas(
-                    fill_color="rgba(255, 0, 0, 0.3)",
-                    stroke_width=3,
-                    stroke_color=color,
-                    background_image=img_pil, 
-                    width=kanvas_lebar,
-                    height=kanvas_tinggi,
-                    drawing_mode=d_mode,
-                    key="canvas_utama",
-                )
+            canvas_key = f"canvas_utama_{st.session_state['canvas_key']}"
+            
+            canvas_result = st_canvas(
+                fill_color="rgba(255, 0, 0, 0.3)",
+                stroke_width=3,
+                stroke_color=color,
+                background_image=img_pil,
+                width=kanvas_lebar,
+                height=kanvas_tinggi,
+                drawing_mode=d_mode,
+                key=canvas_key, 
+            )
+            
+            if canvas_result.json_data is not None and len(canvas_result.json_data["objects"]) > 0:
+                pass
             
             faktor_skala = w / kanvas_lebar
             
