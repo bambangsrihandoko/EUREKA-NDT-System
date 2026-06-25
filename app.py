@@ -359,44 +359,16 @@ elif menu == "Single Inspection":
             kanvas_lebar = 550 
             kanvas_tinggi = int(h * (kanvas_lebar / w))
 
-            st.markdown("""
-            <style>
-                .canvas-container {
-                    position: relative;
-                    display: inline-block;
-                }
-                .stImage {
-                    display: block;
-                }
-                canvas {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    z-index: 10;
-                }
-            </style>
-            """, unsafe_allow_html=True)
-
-            h, w = img_rgb.shape[:2]
-            kanvas_lebar = 550 
-            kanvas_tinggi = int(h * (kanvas_lebar / w))
-
-            st.markdown('<div class="canvas-container">', unsafe_allow_html=True)
-            
-            st.image(img_display, width=kanvas_lebar)
-            
             canvas_result = st_canvas(
                 fill_color="rgba(255, 0, 0, 0.3)",
                 stroke_width=3,
                 stroke_color=color,
-                background_image=None, 
+                background_image=Image.fromarray(img_display), # Langsung masukkan objek PIL di sini
                 width=kanvas_lebar,
                 height=kanvas_tinggi,
                 drawing_mode=d_mode,
                 key="canvas_utama",
             )
-            
-            st.markdown('</div>', unsafe_allow_html=True)
             
             faktor_skala = w / kanvas_lebar
             
