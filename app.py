@@ -359,11 +359,16 @@ elif menu == "Single Inspection":
             kanvas_lebar = 550 
             kanvas_tinggi = int(h * (kanvas_lebar / w))
 
+            buffered = BytesIO()
+            img_pil = Image.fromarray(img_display)
+            img_pil.save(buffered, format="PNG")
+            img_bytes = buffered.getvalue()
+            
             canvas_result = st_canvas(
                 fill_color="rgba(255, 0, 0, 0.3)",
                 stroke_width=3,
                 stroke_color=color,
-                background_image=Image.fromarray(img_display), # Langsung masukkan objek PIL di sini
+                background_image=img_pil, # Tetap gunakan img_pil, tapi tambahkan baris berikut di bawah
                 width=kanvas_lebar,
                 height=kanvas_tinggi,
                 drawing_mode=d_mode,
