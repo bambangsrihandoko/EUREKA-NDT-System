@@ -359,6 +359,16 @@ elif menu == "Single Inspection":
             kanvas_lebar = 550 
             kanvas_tinggi = int(h * (kanvas_lebar / w))
 
+            <style>
+                div[data-testid="stImage"] {
+                    position: absolute !important;
+                    z-index: 1;
+                }
+                canvas {
+                    z-index: 2 !important;
+                }
+            </style>
+            
             buffered = BytesIO()
             img_pil = Image.fromarray(img_display)
             img_pil.save(buffered, format="PNG")
