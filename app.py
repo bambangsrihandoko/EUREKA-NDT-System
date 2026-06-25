@@ -363,8 +363,10 @@ elif menu == "Single Inspection":
             <style>
                 .canvas-container {
                     position: relative;
-                    width: 550px; /* Samakan dengan kanvas_lebar */
-                    height: """ + str(kanvas_tinggi) + """px;
+                    display: inline-block;
+                }
+                .stImage {
+                    display: block;
                 }
                 canvas {
                     position: absolute;
@@ -374,7 +376,11 @@ elif menu == "Single Inspection":
                 }
             </style>
             """, unsafe_allow_html=True)
-            
+
+            h, w = img_rgb.shape[:2]
+            kanvas_lebar = 550 
+            kanvas_tinggi = int(h * (kanvas_lebar / w))
+
             st.markdown('<div class="canvas-container">', unsafe_allow_html=True)
             
             st.image(img_display, width=kanvas_lebar)
