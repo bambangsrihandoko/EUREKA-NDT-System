@@ -355,37 +355,26 @@ elif menu == "Single Inspection":
                 
                 cv2.addWeighted(overlay, 0.4, img_display, 0.6, 0, img_display)
 
-            st.markdown("""
-            <style>
-                .overlay-wrapper { position: relative; width: 550px; }
-                div[data-testid="stImage"] { position: absolute !important; top: 0; left: 0; z-index: 1; }
-                canvas { position: absolute !important; top: 0; left: 0; z-index: 2; }
-            </style>
-            """, unsafe_allow_html=True)
-
-            # 2. Hitung dimensi
-            h, w = img_rgb.shape[:2]
-            kanvas_lebar = 550 
-            kanvas_tinggi = int(h * (kanvas_lebar / w))
-
-            # 3. Tampilkan di dalam satu container
-            st.markdown('<div class="overlay-wrapper" style="height:' + str(kanvas_tinggi) + 'px;">', unsafe_allow_html=True)
-            
-            # Layer bawah: Gambar (st.image)
-            st.image(img_display, width=kanvas_lebar)
-            
-            # Layer atas: Canvas
-            canvas_result = st_canvas(
-                fill_color="rgba(255, 0, 0, 0.3)",
-                stroke_width=3,
-                stroke_color=color,
-                background_image=None, # Kosongkan karena sudah ada st.image di bawahnya
-                width=kanvas_lebar,
-                height=kanvas_tinggi,
-                drawing_mode=d_mode,
-                key="canvas_utama",
-            )
-            st.markdown('</div>', unsafe_allow_html=True)
+                # 1. Pastikan dimensi tepat
+                h, w = img_rgb.shape[:2]
+                kanvas_lebar = 550 
+                kanvas_tinggi = int(h * (kanvas_lebar / w))
+                
+                # 2. Gunakan PIL Image langsung (ini adalah cara paling stabil di versi 0.9.3)
+                img_pil = Image.fromarray(img_display)
+                
+                # 3. Panggil canvas dengan background_image yang di-resize sesuai dimensi
+                # Jangan gunakan CSS, jangan gunakan st.image, cukup satu komponen ini:
+                canvas_result = st_canvas(
+                    fill_color="rgba(255, 0, 0, 0.3)",
+                    stroke_width=3,
+                    stroke_color=color,
+                    background_image=img_pil.resize((kanvas_lebar, kanvas_tinggi)), 
+                    width=kanvas_lebar,
+                    height=kanvas_tinggi,
+                    drawing_mode=d_mode,
+                    key="canvas_utama",
+                )
             
             faktor_skala = w / kanvas_lebar
             
