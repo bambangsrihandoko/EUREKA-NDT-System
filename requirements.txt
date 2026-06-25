@@ -1,0 +1,8 @@
+streamlit
+ultralytics
+opencv-python-headless
+numpy
+pandas
+fpdf
+streamlit-drawable-canvas
+Pillow
