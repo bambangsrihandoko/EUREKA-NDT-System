@@ -354,24 +354,18 @@ elif menu == "Single Inspection":
                             cv2.putText(overlay, label_text, (x1, y1-5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, warna, 2)
                 
                 cv2.addWeighted(overlay, 0.4, img_display, 0.6, 0, img_display)
-
+            
+            st.image(img_display, caption="Radiograph Preview", use_column_width=True)
+            
             h, w = img_rgb.shape[:2]
             kanvas_lebar = 550 
             kanvas_tinggi = int(h * (kanvas_lebar / w))
-            
-            def image_to_base64(img_array):
-                img_pil = Image.fromarray(img_array)
-                buffered = BytesIO()
-                img_pil.save(buffered, format="PNG")
-                return "data:image/png;base64," + base64.b64encode(buffered.getvalue()).decode()
-            
-            img_base64 = image_to_base64(img_display)
             
             canvas_result = st_canvas(
                 fill_color="rgba(255, 0, 0, 0.3)",
                 stroke_width=3,
                 stroke_color=color,
-                background_image=img_base64,
+                background_image=None,  # KUNCI: Kosongkan ini agar tidak bentrok
                 width=kanvas_lebar,
                 height=kanvas_tinggi,
                 drawing_mode=d_mode,
